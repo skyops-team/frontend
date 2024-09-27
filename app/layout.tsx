@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/Header";
+
 export const metadata: Metadata = {
     title: "Skyops",
     description: "",
@@ -13,7 +16,21 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body className="w-full mx-auto max-w-7xl">
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <div className="h-screen w-full">
+                        <Header />
+                        <div className="h-[calc(100%-96px)] px-4">
+                            {children}
+                        </div>
+                    </div>
+                </ThemeProvider>
+            </body>
         </html>
     );
 }
