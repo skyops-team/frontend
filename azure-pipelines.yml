@@ -1,60 +1,85 @@
 trigger:
-- main # Adjust to the branch you want to trigger the build
+    - main # Adjust to the branch you want to trigger the build
 
 pool:
-  vmImage: 'ubuntu-latest' # Using Ubuntu VM for Node.js setup
+    vmImage: "ubuntu-latest" # Using Ubuntu VM for Node.js setup
 
 variables:
-  azureServiceConnection: 'Sample' # Define your Azure service connection name
-  appServiceName: 'SkyOps' # Your Azure App Service name
-  resourceGroupName: 'Skyops_Sachin' # Azure resource group where your App Service is located
-  nodeVersion: '18.x' # Define the Node.js version to use
+    environmentName: "dev"
+    npm_config_cache: $(Pipeline.Workspace)/.npm
+    azureServiceConnection: "Sample" # Define your Azure service connection name
+    appServiceName: "SkyOps" # Your Azure App Service name
+    resourceGroupName: "Skyops_Sachin" # Azure resource group where your App Service is located
+    nodeVersion: "20.x" # Define the Node.js version to use
 
-steps:
-# 1. Install Node.js
-- task: UseNode@1
-  inputs:
-    version: '$(nodeVersion)'
-    checkLatest: true
+stages:
+    - stage: Build
+      displayName: Build stage
+      jobs:
+          - job: Build
+            displayName: Build
+            pool:
+                vmImage: $(vmImage)
 
-# 2. Install dependencies
-- script: |
-    npm install
-  displayName: 'Install dependencies'
+            steps:
+                - task: NodeTool@0
+                  inputs:
+                      versionSpec: $(nodeVersion)
+                  displayName: "Install Node.js"
 
-# 3. Build the React app
-- script: |
-    npm run build
-    ls
-    cd .next
-    ls
-  displayName: 'Build React app'
+                - task: Cache@2
+                  inputs:
+                      key: 'npm | "$(Agent.OS)" | package-lock.json'
+                      restoreKeys: |
+                          npm | "$(Agent.OS)"
+                      path: $(npm_config_cache)
+                  displayName: "Cache npm"
 
-# 4. Archive the build output (static files)
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '.next' # The output folder for React builds
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/.next/server/app.zip'
-    replaceExistingArchive: true
-  displayName: 'Archive React build output'
+                - script: npm ci
+                  displayName: "Install and remove cached node_modules"
 
-# 5. Deploy to Azure Web App
-- task: AzureWebApp@1
-  inputs:
-    azureSubscription: '$(azureServiceConnection)'
-    appName: '$(appServiceName)'
-    package: '$(Build.ArtifactStagingDirectory)/.next/server/app.zip'
-    resourceGroupName: '$(resourceGroupName)'
-    deploymentMethod: 'zipDeploy'
-    appType: 'webApp'
-  displayName: 'Deploy to Azure Web App'
+                - task: Cache@2
+                  inputs:
+                      key: next | "$(Agent.OS)" | package-lock.json
+                      path: "$(System.DefaultWorkingDirectory)/.next/cache"
+                  displayName: "Cache .next/cache"
 
-# 6. Publish build artifacts (optional)
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/.next/server/app.zip'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-  displayName: 'Publish build artifacts'
+                - script: npm run build
+                  displayName: "Build"
+
+                - task: ArchiveFiles@2
+                  inputs:
+                      rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
+                      includeRootFolder: false
+                      archiveType: "zip"
+                      archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
+                      replaceExistingArchive: true
+
+                - task: PublishBuildArtifacts@1
+                  inputs:
+                      PathtoPublish: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
+                      ArtifactName: "drop"
+
+    - stage: Deploy
+      displayName: Deploy stage
+      dependsOn: Build
+      condition: succeeded()
+
+      jobs:
+          - deployment: Deploy
+            displayName: Deploy
+            environment: $(environmentName)
+            pool:
+                vmImage: $(vmImage)
+
+            strategy:
+                runOnce:
+                    deploy:
+                        steps:
+                            - task: AzureWebApp@1
+                              inputs:
+                                  azureSubscription: $(azureServiceConnection)
+                                  resourceGroupName: "$(resourceGroupName)"
+                                  appType: "webApp"
+                                  appName: "$(appServiceName)"
+                                  package: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"
