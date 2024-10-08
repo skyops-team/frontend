@@ -33,7 +33,7 @@ stages:
                       path: $(npm_config_cache)
                   displayName: "Cache npm"
 
-                - script: npm ci
+                - script: npm i
                   displayName: "Install and remove cached node_modules"
 
                 - task: Cache@2
