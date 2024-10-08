@@ -26,15 +26,17 @@ steps:
 - script: |
     npm run build
     ls -la
+    cd .next
+    ls
   displayName: 'Build React app'
 
 # 4. Archive the build output (static files)
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: 'build' # The output folder for React builds
+    rootFolderOrFile: '.next' # The output folder for React builds
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/.next.zip'
     replaceExistingArchive: true
   displayName: 'Archive React build output'
 
