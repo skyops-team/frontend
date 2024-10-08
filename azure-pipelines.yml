@@ -1,11 +1,9 @@
 trigger:
     - main # Adjust to the branch you want to trigger the build
 
-pool:
-    vmImage: "ubuntu-latest" # Using Ubuntu VM for Node.js setup
-
 variables:
     environmentName: "dev"
+    vmImage: "ubuntu-latest"
     npm_config_cache: $(Pipeline.Workspace)/.npm
     azureServiceConnection: "Sample" # Define your Azure service connection name
     appServiceName: "SkyOps" # Your Azure App Service name
