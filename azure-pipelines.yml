@@ -25,6 +25,7 @@ steps:
 # 3. Build the React app
 - script: |
     npm run build
+    npm start
     ls -la
     cd .next
     ls
