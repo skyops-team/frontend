@@ -25,10 +25,6 @@ steps:
 # 3. Build the React app
 - script: |
     npm run build
-    npm start
-    ls -la
-    cd .next
-    ls
   displayName: 'Build React app'
 
 # 4. Archive the build output (static files)
