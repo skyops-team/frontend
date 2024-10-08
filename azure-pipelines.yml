@@ -36,7 +36,7 @@ steps:
     rootFolderOrFile: '.next' # The output folder for React builds
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/.next.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/.next/server/app.zip'
     replaceExistingArchive: true
   displayName: 'Archive React build output'
 
@@ -45,7 +45,7 @@ steps:
   inputs:
     azureSubscription: '$(azureServiceConnection)'
     appName: '$(appServiceName)'
-    package: '$(Build.ArtifactStagingDirectory)/.next.zip'
+    package: '$(Build.ArtifactStagingDirectory)/.next/server/app.zip'
     resourceGroupName: '$(resourceGroupName)'
     deploymentMethod: 'zipDeploy'
     appType: 'webApp'
@@ -54,7 +54,7 @@ steps:
 # 6. Publish build artifacts (optional)
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/.next.zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/.next/server/app.zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Publish build artifacts'
