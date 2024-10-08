@@ -1,0 +1,57 @@
+trigger:
+- main # Adjust to the branch you want to trigger the build
+
+pool:
+  vmImage: 'ubuntu-latest' # Using Ubuntu VM for Node.js setup
+
+variables:
+  azureServiceConnection: 'Sample' # Define your Azure service connection name
+  appServiceName: 'SkyOps' # Your Azure App Service name
+  resourceGroupName: 'Skyops_Sachin' # Azure resource group where your App Service is located
+  nodeVersion: '18.x' # Define the Node.js version to use
+
+steps:
+# 1. Install Node.js
+- task: UseNode@1
+  inputs:
+    version: '$(nodeVersion)'
+    checkLatest: true
+
+# 2. Install dependencies
+- script: |
+    npm install
+  displayName: 'Install dependencies'
+
+# 3. Build the React app
+- script: |
+    npm run build
+  displayName: 'Build React app'
+
+# 4. Archive the build output (static files)
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'build' # The output folder for React builds
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+  displayName: 'Archive React build output'
+
+# 5. Deploy to Azure Web App
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: '$(azureServiceConnection)'
+    appName: '$(appServiceName)'
+    package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    resourceGroupName: '$(resourceGroupName)'
+    deploymentMethod: 'zipDeploy'
+    appType: 'webApp'
+  displayName: 'Deploy to Azure Web App'
+
+# 6. Publish build artifacts (optional)
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish build artifacts'
