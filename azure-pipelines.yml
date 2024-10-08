@@ -45,7 +45,7 @@ steps:
   inputs:
     azureSubscription: '$(azureServiceConnection)'
     appName: '$(appServiceName)'
-    package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    package: '$(Build.ArtifactStagingDirectory)/.next.zip'
     resourceGroupName: '$(resourceGroupName)'
     deploymentMethod: 'zipDeploy'
     appType: 'webApp'
@@ -54,7 +54,7 @@ steps:
 # 6. Publish build artifacts (optional)
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/.next.zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Publish build artifacts'
