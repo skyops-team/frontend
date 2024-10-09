@@ -42,9 +42,9 @@ export function LoginForm() {
             <CardFooter className="flex flex-col">
                 <Button className="w-full">Sign in</Button>
                 <div className="mt-4 text-center text-sm">
-                    Already have an account?{" "}
+                    New user?{" "}
                     <Link href="/signup" className="underline">
-                        Sign in
+                        Sign up
                     </Link>
                 </div>
             </CardFooter>
