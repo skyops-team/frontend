@@ -62,4 +62,4 @@ stages:
                                         resourceGroupName: "$(resourceGroupName)"
                                         appType: "webApp"
                                         appName: "$(appServiceName)"
-                                        package: "./.next/standalone"
+                                        package: "./build/standalone"
