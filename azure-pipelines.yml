@@ -39,17 +39,15 @@ stages:
                 - task: Cache@2
                   inputs:
                       key: next | "$(Agent.OS)"
-                      path: "$(System.DefaultWorkingDirectory)/build/cache"
+                      path: "$(System.DefaultWorkingDirectory)/.next/cache"
                   displayName: "Cache .next/cache"
 
                 - script: npm run build
                   displayName: "Build"
 
-                - script: mv ./build/static ./build/standalone/build && mv ./public ./build/standalone
-
                 - task: ArchiveFiles@2
                   inputs:
-                      rootFolderOrFile: "$(System.DefaultWorkingDirectory)/build"
+                      rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
                       includeRootFolder: false
                       archiveType: "zip"
                       archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
