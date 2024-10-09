@@ -45,7 +45,7 @@ stages:
                 - script: npm run build
                   displayName: "Build"
 
-                - script: mv ./build/static ./build/standalone/build && mv ./public ./build/standalone
+                - script: mv ./.next/static ./.next/standalone/.next && mv ./public ./.next/standalone
 
     - stage: Deploy
       displayName: Deploy stage
