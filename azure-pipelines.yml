@@ -47,7 +47,7 @@ stages:
 
                 - script: mv ./build/static ./build/standalone/build && mv ./public ./build/standalone
 
-                - deployment: Deploy
+                - task: Deploy
                   displayName: Deploy
                   environment: $(environmentName)
                   pool:
