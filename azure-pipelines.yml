@@ -41,9 +41,19 @@ stages:
                       key: next | "$(Agent.OS)"
                       path: "$(System.DefaultWorkingDirectory)/.next/cache"
                   displayName: "Cache .next/cache"
+                  
+                - script: |
+                    echo "Listing files before build"
+                    ls -la
+                  displayName: "List files before build"
 
-                - script: npm run build
+                - script: npm run build --output-path=./build                
                   displayName: "Build"
+
+                - script: |
+                    echo "Listing files after build"
+                    ls -la
+                  displayName: "List files after build"
 
                 - task: ArchiveFiles@2
                   inputs:
@@ -74,6 +84,12 @@ stages:
                 runOnce:
                     deploy:
                         steps:
+                        
+                            - script: |
+                                echo "Listing files in workspace before deployment"
+                                ls -la "$(Pipeline.Workspace)/drop"
+                              displayName: "List files before deployment"
+
                             - task: AzureWebApp@1
                               inputs:
                                   azureSubscription: $(azureServiceConnection)
