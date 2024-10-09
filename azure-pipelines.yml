@@ -47,6 +47,19 @@ stages:
 
                 - script: mv ./build/static ./build/standalone/build && mv ./public ./build/standalone
 
+                - task: ArchiveFiles@2
+                  inputs:
+                      rootFolderOrFile: "$(System.DefaultWorkingDirectory)/build"
+                      includeRootFolder: false
+                      archiveType: "zip"
+                      archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
+                      replaceExistingArchive: true
+
+                - task: PublishBuildArtifacts@1
+                  inputs:
+                      PathtoPublish: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
+                      ArtifactName: "drop"
+
     - stage: Deploy
       displayName: Deploy stage
       dependsOn: Build
@@ -69,4 +82,4 @@ stages:
                                   resourceGroupName: "$(resourceGroupName)"
                                   appType: "webApp"
                                   appName: "$(appServiceName)"
-                                  package: "./build/standalone"
+                                  package: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"
