@@ -50,7 +50,7 @@ stages:
                 - script: npm run build
                   displayName: "Build"
 
-                - script: mkdir build/standalone/_next && mkdir build/standalone/_next/static && mv ./build/static ./build/standalone/_next/static/ && mv ./public ./build/standalone/
+                - script: mkdir build/standalone/_next && mv ./build/static ./build/standalone/_next/ && mv ./public ./build/standalone/
 
                 - script: |
                       echo "Listing files after build"
