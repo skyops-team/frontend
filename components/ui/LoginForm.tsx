@@ -126,7 +126,7 @@ export function LoginForm() {
         };
 
         fetch(
-            "https://skyops-demo.azurewebsites.net/api/users/adduser",
+            "https://skyops-demo.azurewebsites.net/api/users/login",
             requestOptions
         )
             .then((response) => {

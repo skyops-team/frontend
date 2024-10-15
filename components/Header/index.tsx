@@ -11,7 +11,7 @@ export default function Header() {
 
     return (
         <div className="h-24 w-full px-4 flex flex-row items-center justify-between">
-            <div>
+            <Link href={"/"}>
                 <Image
                     src="/logo.png"
                     className="h-full"
@@ -19,8 +19,11 @@ export default function Header() {
                     width={100}
                     height={50}
                 />
-            </div>
+            </Link>
             <div className="flex justify-center gap-4">
+                <Button variant={"outline"} asChild>
+                    <Link href={"/forums"}>Forums</Link>
+                </Button>
                 {pathname === "/login" ? (
                     <Button variant={"outline"} asChild>
                         <Link href={"/signup"}>Signup</Link>
