@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
+                    <Toaster />
                     <div className="h-screen w-full">
                         <Header />
                         <div className="h-[calc(100%-96px)] px-4">

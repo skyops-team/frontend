@@ -10,7 +10,7 @@ export default function Header() {
     const pathname = usePathname();
 
     return (
-        <div className="h-24 w-full flex flex-row items-center justify-between">
+        <div className="h-24 w-full px-4 flex flex-row items-center justify-between">
             <div>
                 <Image
                     src="/logo.png"
