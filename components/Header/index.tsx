@@ -5,9 +5,14 @@ import { DarkModeToggle } from "@/components/ui/DarkModeToggle";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { User } from "lucide-react";
+import { userStore } from "@/stores/user";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
     const pathname = usePathname();
+    const router = useRouter();
+    const user = userStore();
 
     return (
         <div className="h-24 w-full px-4 flex flex-row items-center justify-between">
@@ -21,18 +26,31 @@ export default function Header() {
                 />
             </Link>
             <div className="flex justify-center gap-4">
-                <Button variant={"outline"} asChild>
-                    <Link href={"/forums"}>Forums</Link>
-                </Button>
-                {pathname === "/login" ? (
-                    <Button variant={"outline"} asChild>
-                        <Link href={"/signup"}>Signup</Link>
+                <Link href={"/forums"}>
+                    <Button
+                        variant={pathname === "/forums" ? "default" : "outline"}
+                    >
+                        Forums
                     </Button>
-                ) : (
-                    <Button variant={"outline"} asChild>
-                        <Link href={"/login"}>Login</Link>
-                    </Button>
-                )}
+                </Link>
+                <div
+                    className="relative flex h-10 w-10 shrink-0 overflow-hidden border cursor-pointer rounded-lg"
+                    onClick={() => {
+                        console.log(user.isLoggedIn);
+                        if (user.isLoggedIn) {
+                            router.push("/profile");
+                        } else {
+                            router.push("/login");
+                        }
+                    }}
+                >
+                    <div className="flex items-center justify-center size-full">
+                        <User
+                            className="size-7 text-gray-600"
+                            strokeWidth={1}
+                        />
+                    </div>
+                </div>
                 <DarkModeToggle />
             </div>
         </div>
