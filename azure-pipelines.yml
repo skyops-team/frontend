@@ -5,9 +5,9 @@ variables:
     environmentName: "dev"
     vmImage: "ubuntu-latest"
     npm_config_cache: $(Pipeline.Workspace)/.npm
-    azureServiceConnection: "Sample" # Define your Azure service connection name
-    appServiceName: "SkyOps" # Your Azure App Service name
-    resourceGroupName: "Skyops_Sachin" # Azure resource group where your App Service is located
+    azureServiceConnection: "SkyOps_Service" # Define your Azure service connection name
+    appServiceName: "SkyOpsUI" # Your Azure App Service name
+    resourceGroupName: "SkyOps" # Azure resource group where your App Service is located
     nodeVersion: "20.x" # Define the Node.js version to use
 
 stages:
