@@ -39,7 +39,7 @@ stages:
                 - task: Cache@2
                   inputs:
                       key: next | "$(Agent.OS)"
-                      path: "$(System.DefaultWorkingDirectory)/.next/cache"
+                      path: "$(System.DefaultWorkingDirectory)/build/cache"
                   displayName: "Cache .next/cache"
 
                 - script: |
