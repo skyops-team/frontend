@@ -36,11 +36,11 @@ stages:
                 - script: npm i
                   displayName: "Install node_modules"
 
-                # - task: Cache@2
-                #   inputs:
-                #       key: next | "$(Agent.OS)"
-                #       path: "$(System.DefaultWorkingDirectory)/.next/cache"
-                #   displayName: "Cache .next/cache"
+                - task: Cache@2
+                  inputs:
+                      key: next | "$(Agent.OS)"
+                      path: "$(System.DefaultWorkingDirectory)/.next/cache"
+                  displayName: "Cache .next/cache"
 
                 - script: |
                       echo "Listing files before build"
