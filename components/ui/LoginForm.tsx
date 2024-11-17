@@ -125,7 +125,7 @@ export function LoginForm() {
             redirect: "follow",
         };
 
-        fetch("https://skyops-demo.azurewebsites.net/api/login", requestOptions)
+        fetch("https://skyopsapi.azurewebsites.net/api/login", requestOptions)
             .then(async (response) => {
                 switch (response.status) {
                     case 200:
