@@ -22,7 +22,7 @@ export const description =
 
 interface userInformationInterface {
     email: string;
-    password: number;
+    password: string;
 }
 
 const userInformationObject: userInformationInterface = {
@@ -125,7 +125,7 @@ export function LoginForm() {
             redirect: "follow",
         };
 
-        fetch("https://skyopsapi.azurewebsites.net/api/login", requestOptions)
+        fetch("https://skyops-demo.azurewebsites.net/api/login", requestOptions)
             .then(async (response) => {
                 switch (response.status) {
                     case 200:
