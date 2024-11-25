@@ -184,7 +184,7 @@ export default function SignupForm() {
             redirect: "follow",
         };
 
-        fetch("https://skyops-demo.azurewebsites.net/api/users", requestOptions)
+        fetch("https://skyopsapi.azurewebsites.net/api/users", requestOptions)
             .then((response) => {
                 switch (response.status) {
                     case 200:
