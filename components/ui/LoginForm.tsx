@@ -22,7 +22,7 @@ export const description =
 
 interface userInformationInterface {
     email: string;
-    password: string;
+    password: number;
 }
 
 const userInformationObject: userInformationInterface = {
