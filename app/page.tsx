@@ -158,7 +158,7 @@ export default function Home() {
                             </div>
                             <div className="ml-6 lg:ml-0">
                                 <h2 className="mb-5 text-xl font-medium lg:mt-8">
-                                    Ask Skyops community
+                                    Ask AIP-SkyOps community
                                 </h2>
                                 <p className="font-inter max-w-md pr-5 text-base text-gray-500">
                                     Our vibrant community of DevOps experts is
