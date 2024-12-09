@@ -21,7 +21,7 @@ export const description =
     "A simple login form with email and password. The submit button says 'Sign in'.";
 
 interface userInformationInterface {
-    email: number;
+    email: string;
     password: string;
 }
 
