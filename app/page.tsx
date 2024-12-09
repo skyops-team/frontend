@@ -14,7 +14,7 @@ export default function Home() {
                             <h1 className="mb-4 text-4xl font-bold md:text-6xl">
                                 Ask the{" "}
                                 <span className="text-primary">
-                                    Skyops Community
+                                    AIP - Skyops Community
                                 </span>{" "}
                                 : Get Tech{" "}
                                 <span className="text-primary">
